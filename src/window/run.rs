@@ -1,4 +1,4 @@
-use crate::app::app::App;
+use crate::window::app::App;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::{UnwrapThrowExt, prelude::wasm_bindgen};
 use winit::event_loop::EventLoop;

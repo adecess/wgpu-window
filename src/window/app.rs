@@ -1,4 +1,4 @@
-use crate::app::state::State;
+use crate::window::state::State;
 use std::sync::Arc;
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::UnwrapThrowExt;

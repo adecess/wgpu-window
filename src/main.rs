@@ -1,5 +1,5 @@
-use tutorial1_window::run;
+use wgpu_window::run;
 
 fn main() {
-    run().expect("Failed to run app");
+    run().expect("Failed to run window");
 }

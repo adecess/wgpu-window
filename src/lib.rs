@@ -1,3 +1,3 @@
-mod app;
+mod window;
 
-pub use app::run::run;
+pub use window::run::run;
