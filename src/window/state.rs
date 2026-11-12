@@ -1,4 +1,6 @@
+use std::cmp::Ordering;
 use std::sync::Arc;
+use winit::dpi::{PhysicalPosition};
 use winit::event_loop::ActiveEventLoop;
 use winit::keyboard::KeyCode;
 use winit::window::Window;
@@ -11,6 +13,8 @@ pub(crate) struct State {
     config: wgpu::SurfaceConfiguration,
     is_surface_configured: bool,
     window: Arc<Window>,
+    colour: wgpu::Color,
+    position: PhysicalPosition<f64>
 }
 
 impl State {
@@ -87,6 +91,13 @@ impl State {
             config,
             is_surface_configured: false,
             window,
+            colour: wgpu::Color {
+                r: 0.1,
+                g: 0.2,
+                b: 0.3,
+                a: 1.0,
+            },
+            position: PhysicalPosition::default()
         })
     }
 
@@ -103,6 +114,24 @@ impl State {
         if let (KeyCode::Escape, true) = (code, is_pressed) {
             event_loop.exit()
         }
+    }
+
+    pub fn handle_mouse_moved(&mut self, position: PhysicalPosition<f64>) {
+        match self.position.x.total_cmp(&position.x) {
+            Ordering::Less => {
+                self.colour.r += 0.01;
+                self.colour.g += 0.01;
+                self.colour.b += 0.01;
+            },
+            Ordering::Equal => {},
+            Ordering::Greater => {
+                self.colour.r -= 0.01;
+                self.colour.g -= 0.01;
+                self.colour.b -= 0.01;
+            },
+        }
+        
+        self.position = position;
     }
 
     pub fn update(&mut self) {
@@ -155,12 +184,7 @@ impl State {
                     resolve_target: None,
                     depth_slice: None,
                     ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(wgpu::Color {
-                            r: 0.1,
-                            g: 0.2,
-                            b: 0.3,
-                            a: 1.0,
-                        }),
+                        load: wgpu::LoadOp::Clear(self.colour),
                         store: wgpu::StoreOp::Store,
                     },
                 })],

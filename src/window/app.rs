@@ -124,6 +124,10 @@ impl ApplicationHandler<State> for App {
                     },
                 ..
             } => state.handle_key(event_loop, code, key_state.is_pressed()),
+            WindowEvent::CursorMoved {
+                device_id: _device_id,
+                position
+            } => state.handle_mouse_moved(position),
             _ => {}
         }
     }
